@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>1.424</version>
+  </parent>
+
+  <groupId>org.jenkinsci.plugins</groupId>
+  <artifactId>async-http-client</artifactId>
+  <version>1.7.2-SNAPSHOT</version>
+  <packaging>hpi</packaging>
+
+  <name>Async Http Client</name>
+  <description>Provides Asyn Http Client for Jenkins Plugins</description>
+  <url>http://wiki.jenkins-ci.org/display/JENKINS/Async+Http+Client+Plugin</url>
+
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/async-http-client-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/async-http-client-plugin.git</developerConnection>
+    <url>http://github.com/jenkinsci/async-http-client-plugin</url>
+  </scm>
+  <distributionManagement>
+    <repository>
+      <id>maven.jenkins-ci.org</id>
+      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
+    </repository>
+  </distributionManagement>
+
+  <properties>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>http://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.ning</groupId>
+      <artifactId>async-http-client</artifactId>
+      <version>1.7.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+  </dependencies>
+
+</project>  
+
+

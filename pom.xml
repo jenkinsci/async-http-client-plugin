@@ -21,12 +21,12 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.424</version>
+    <!-- The current rally point for parent version is still 1.398 -->
+    <version>1.398</version>
   </parent>
 
-  <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>async-http-client</artifactId>
-  <version>1.7.3-SNAPSHOT</version>
+  <version>1.7.2-1-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>Async Http Client</name>
@@ -51,16 +51,25 @@
     </developer>
   </developers>
 
+  <prerequisites>
+    <maven>2.2.1</maven>
+  </prerequisites>
+
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/async-http-client-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/async-http-client-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/async-http-client-plugin</url>
   </scm>
   <distributionManagement>
+    <!-- TODO remove when 1.409+ is the rally point for parent version -->
     <repository>
       <id>maven.jenkins-ci.org</id>
       <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
     </repository>
+    <snapshotRepository>
+      <id>maven.jenkins-ci.org</id>
+      <url>http://maven.jenkins-ci.org:8081/content/repositories/snapshots/</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <properties>
@@ -69,14 +78,22 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>repo.jenkins-ci.org</id>
-      <url>http://repo.jenkins-ci.org/public/</url>
-    </pluginRepository>
-  </pluginRepositories>
+  <repositories>
+       <repository>
+           <id>repo.jenkins-ci.org</id>
+           <url>http://repo.jenkins-ci.org/public/</url>
+       </repository>
+   </repositories>
+
+   <pluginRepositories>
+       <pluginRepository>
+           <id>repo.jenkins-ci.org</id>
+           <url>http://repo.jenkins-ci.org/public/</url>
+       </pluginRepository>
+   </pluginRepositories>
 
   <dependencies>
+    <!-- regular dependencies -->
     <dependency>
       <groupId>com.ning</groupId>
       <artifactId>async-http-client</artifactId>
@@ -87,8 +104,55 @@
       <artifactId>slf4j-jdk14</artifactId>
       <version>1.6.1</version>
     </dependency>
+    <!-- plugin dependencies -->
+    <!-- jenkins dependencies -->
+    <!-- test dependencies -->
   </dependencies>
 
-</project>  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.0.1</version>
+          <executions>
+            <execution>
+              <id>enforce-maven</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <version>(,2.1.0),(2.1.0,2.2.0),(2.2.0,)</version>
+                    <message>Maven 2.1.0 and 2.2.0 produce incorrect GPG signatures and checksums respectively.</message>
+                  </requireMavenVersion>
+                  <requireMavenVersion>
+                    <version>(,3.0),[3.0.4,)</version>
+                    <message>Maven 3.0 through 3.0.3 inclusive do not pass correct settings.xml to Maven Release Plugin.</message>
+                  </requireMavenVersion>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.2.2</version>
+      </plugin>
+      <plugin>
+        <!-- TODO remove when 1.409+ is the rally point for parent version -->
+        <groupId>org.jenkins-ci.tools</groupId>
+        <artifactId>maven-hpi-plugin</artifactId>
+        <version>1.71</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
 
 

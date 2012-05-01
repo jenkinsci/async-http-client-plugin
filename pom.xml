@@ -26,7 +26,7 @@
   </parent>
 
   <artifactId>async-http-client</artifactId>
-  <version>1.7.3-SNAPSHOT</version>
+  <version>1.7.4-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>Async Http Client</name>
@@ -97,7 +97,7 @@
     <dependency>
       <groupId>com.ning</groupId>
       <artifactId>async-http-client</artifactId>
-      <version>1.7.2</version>
+      <version>1.7.4</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

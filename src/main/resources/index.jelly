@@ -1,0 +1,3 @@
+<div>
+This plugin provides a shared dependency on the ning.com async-http-client library so that other plugins can co-operate when using this library.
+</div>

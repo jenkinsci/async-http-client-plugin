@@ -30,7 +30,7 @@
   <packaging>hpi</packaging>
 
   <name>Async Http Client</name>
-  <description>Provides Async Http Client as a dependency for Jenkins Plugins</description>
+  <description>This plugin provides a shared dependency on the ning.com async-http-client library so that other plugins can co-operate when using this library.</description>
   <url>http://wiki.jenkins-ci.org/display/JENKINS/Async+Http+Client+Plugin</url>
   <inceptionYear>2012</inceptionYear>
   <licenses>

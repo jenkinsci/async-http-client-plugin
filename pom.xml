@@ -21,8 +21,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <!-- The current rally point for parent version is still 1.398 -->
-    <version>1.398</version>
+    <version>1.424</version>
   </parent>
 
   <artifactId>async-http-client</artifactId>
@@ -60,17 +59,6 @@
     <developerConnection>scm:git:git@github.com:jenkinsci/async-http-client-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/async-http-client-plugin</url>
   </scm>
-  <distributionManagement>
-    <!-- TODO remove when 1.409+ is the rally point for parent version -->
-    <repository>
-      <id>maven.jenkins-ci.org</id>
-      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>maven.jenkins-ci.org</id>
-      <url>http://maven.jenkins-ci.org:8081/content/repositories/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -143,16 +131,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.2.2</version>
       </plugin>
-      <plugin>
-        <!-- TODO remove when 1.409+ is the rally point for parent version -->
-        <groupId>org.jenkins-ci.tools</groupId>
-        <artifactId>maven-hpi-plugin</artifactId>
-        <version>1.71</version>
-        <extensions>true</extensions>
-      </plugin>
     </plugins>
   </build>
 
 </project>
-
-

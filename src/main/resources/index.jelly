@@ -1,3 +1,5 @@
 <div>
-This plugin provides a shared dependency on the ning.com async-http-client library so that other plugins can co-operate when using this library.
+  This plugin provides a shared dependency on the
+  <a href="https://github.com/AsyncHttpClient/async-http-client">async-http-client</a>
+  library so that other plugins can co-operate when using this library.
 </div>

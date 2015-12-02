@@ -44,7 +44,7 @@ public final class AHCUtils {
 
             if (proxy.noProxyHost != null) {
                 for (String s : proxy.noProxyHost.split("[ \t\n,|]+")) {
-                    if (s.length()>0) {
+                    if (s.length() > 0) {
                         proxyServer.addNonProxyHost(s);
                     }
                 }

@@ -21,9 +21,6 @@ import jenkins.model.Jenkins;
 
 /**
  * Utility methods for dealing with {@link com.ning.http.client.AsyncHttpClient} from a Jenkins plugin.
- *
- * @author Stephen Connolly
- * @author Emilio Escobar
  */
 public final class AHCUtils {
 

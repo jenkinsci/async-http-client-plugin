@@ -23,7 +23,7 @@ import jenkins.model.Jenkins;
  * Utility methods for dealing with {@link com.ning.http.client.AsyncHttpClient} from a Jenkins plugin.
  *
  * @author Stephen Connolly
- * @author Cloudbees, Inc.
+ * @author Emilio Escobar
  */
 public final class AHCUtils {
 
@@ -47,8 +47,9 @@ public final class AHCUtils {
 
             if (proxy.noProxyHost != null) {
                 for (String s : proxy.noProxyHost.split("[ \t\n,|]+")) {
-                    if (s.length()==0)  continue;
-                    proxyServer.addNonProxyHost(s);
+                    if (s.length()>0) {
+                        proxyServer.addNonProxyHost(s);
+                    }
                 }
             }
         } else {

@@ -25,7 +25,7 @@
   </parent>
 
   <artifactId>async-http-client</artifactId>
-  <version>1.7.24</version>
+  <version>1.7.25-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>Async Http Client</name>
@@ -58,7 +58,7 @@
     <connection>scm:git:git://github.com/jenkinsci/async-http-client-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/async-http-client-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/async-http-client-plugin</url>
-    <tag>async-http-client-1.7.24</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>

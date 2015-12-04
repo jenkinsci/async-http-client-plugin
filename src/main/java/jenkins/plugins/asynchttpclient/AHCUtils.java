@@ -21,8 +21,6 @@ import jenkins.model.Jenkins;
 
 /**
  * Utility methods for dealing with {@link com.ning.http.client.AsyncHttpClient} from a Jenkins plugin.
- *
- * @author Stephen Connolly
  */
 public final class AHCUtils {
 
@@ -43,6 +41,14 @@ public final class AHCUtils {
         if (Jenkins.getInstance() != null && Jenkins.getInstance().proxy != null) {
             final ProxyConfiguration proxy = Jenkins.getInstance().proxy;
             proxyServer = new ProxyServer(proxy.name, proxy.port, proxy.getUserName(), proxy.getPassword());
+
+            if (proxy.noProxyHost != null) {
+                for (String s : proxy.noProxyHost.split("[ \t\n,|]+")) {
+                    if (s.length() > 0) {
+                        proxyServer.addNonProxyHost(s);
+                    }
+                }
+            }
         } else {
             proxyServer = null;
         }

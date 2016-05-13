@@ -2,6 +2,7 @@ package jenkins.plugins.asynchttpclient;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.ProxyConfiguration;
 import hudson.model.Describable;
@@ -65,6 +66,7 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
      *
      * @return the instance.
      */
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "https://github.com/jenkinsci/jenkins/pull/2094")
     private synchronized AsyncHttpClient getInstance() {
         if (instance != null) {
             ProxyConfiguration proxy = Jenkins.getInstance().proxy;
@@ -132,6 +134,7 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "https://github.com/jenkinsci/jenkins/pull/2094")
     public AHC getDescriptor() {
         return (AHC) Jenkins.getInstance().getDescriptor(AHC.class);
     }

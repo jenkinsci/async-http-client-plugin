@@ -16,6 +16,7 @@
 package jenkins.plugins.asynchttpclient;
 
 import com.ning.http.client.ProxyServer;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.ProxyConfiguration;
 import jenkins.model.Jenkins;
 
@@ -36,6 +37,7 @@ public final class AHCUtils {
      *
      * @return the proxy server or {@code null} if no proxy server required.
      */
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "https://github.com/jenkinsci/jenkins/pull/2094")
     public static ProxyServer getProxyServer() {
         ProxyServer proxyServer;
         if (Jenkins.getInstance() != null && Jenkins.getInstance().proxy != null) {

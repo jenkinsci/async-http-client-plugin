@@ -11,6 +11,8 @@ import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.logging.Logger;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
 
 /**
  * Provides a global shared {@link AsyncHttpClient} instance, for use from the master,
@@ -23,6 +25,16 @@ import java.util.logging.Logger;
  */
 @Extension
 public class AHC extends Descriptor<AHC> implements Describable<AHC> {
+
+    /**
+     * Override to enable insecure handling of TLS connections.
+     * @see <a href="https://www.cvedetails.com/cve/CVE-2013-7397/">CVE-2013-7397</a> and
+     * <a href="https://www.cvedetails.com/cve/CVE-2013-7398/">CVE-2013-7398</a>
+     * @since 1.7.24.1
+     */
+    @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Allow runtime modification")
+    @Restricted(NoExternalUse.class) // no direct linking against this field please
+    public static boolean acceptAnyCertificate = Boolean.getBoolean(AHC.class.getName() + ".acceptAnyCertificate");
 
     /**
      * Our logger.
@@ -82,7 +94,11 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
         if (instance == null || instance.isClosed()) {
             logger.fine("Starting shared AsyncHttpClient instance");
             instance = new AsyncHttpClient(
-                    new AsyncHttpClientConfig.Builder().setProxyServer(AHCUtils.getProxyServer()).build());
+                    new AsyncHttpClientConfig.Builder()
+                            .setProxyServer(AHCUtils.getProxyServer())
+                            .setHostnameVerifier(AHCUtils.getHostnameVerifier())
+                            .setSSLContext(AHCUtils.getSSLContext())
+                            .build());
         }
         return instance;
     }

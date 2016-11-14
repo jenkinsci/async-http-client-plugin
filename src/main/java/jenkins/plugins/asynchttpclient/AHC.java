@@ -18,8 +18,8 @@ import org.kohsuke.accmod.restrictions.NoExternalUse;
  * Provides a global shared {@link AsyncHttpClient} instance, for use from the master,
  * configured with the master's proxy settings.
  * This shared instance will be gracefully closed when Jenkins is terminating, and will be recycled if the proxy
- * settings change or if somebody closes it my accident.
- * The recommendation is to not to cache the instance longer than a user's request.
+ * settings change or if somebody closes it by accident.
+ * The recommendation is not to cache the instance longer than a user's request.
  *
  * @since 1.7.8
  */
@@ -160,7 +160,7 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
      */
     @Override
     public String getDisplayName() {
-        return null;
+        return "";
     }
 
 }

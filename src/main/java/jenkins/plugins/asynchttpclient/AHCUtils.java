@@ -15,20 +15,26 @@
  */
 package jenkins.plugins.asynchttpclient;
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.ProxyServer;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.ProxyConfiguration;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
 import jenkins.model.Jenkins;
-import jenkins.plugins.asynchttpclient.util.DefaultHostnameVerifier;
+import org.asynchttpclient.Realm;
+import org.asynchttpclient.proxy.ProxyServer;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 
@@ -55,34 +61,20 @@ public final class AHCUtils {
         ProxyServer proxyServer;
         if (Jenkins.getInstance() != null && Jenkins.getInstance().proxy != null) {
             final ProxyConfiguration proxy = Jenkins.getInstance().proxy;
-            proxyServer = new ProxyServer(proxy.name, proxy.port, proxy.getUserName(), proxy.getPassword());
 
+            List<String> nonProxyHosts = new ArrayList<>();
             if (proxy.noProxyHost != null) {
                 for (String s : proxy.noProxyHost.split("[ \t\n,|]+")) {
                     if (s.length() > 0) {
-                        proxyServer.addNonProxyHost(s);
+                        nonProxyHosts.add(s);
                     }
                 }
             }
+            proxyServer = new ProxyServer(proxy.name, proxy.port, proxy.port, new Realm.Builder(proxy.getUserName(), proxy.getPassword()).build(), nonProxyHosts);
         } else {
             proxyServer = null;
         }
         return proxyServer;
-    }
-
-    /**
-     * Return the default {@link HostnameVerifier} to use with {@link AsyncHttpClient}.
-     *
-     * @return the default {@link HostnameVerifier} to use with {@link AsyncHttpClient}.
-     * @since 1.7.24.1
-     */
-    public static HostnameVerifier getHostnameVerifier() {
-        return AHC.acceptAnyCertificate ? new HostnameVerifier() {
-            @Override
-            public boolean verify(String s, SSLSession sslSession) {
-                return true;
-            }
-        } : new DefaultHostnameVerifier();
     }
 
     /**
@@ -91,11 +83,11 @@ public final class AHCUtils {
      * @return the default {@link SSLContext} to use with {@link AsyncHttpClient}.
      * @since 1.7.24.1
      */
-    public static SSLContext getSSLContext() {
+    public static SslContext getSSLContext() {
         try {
-            return AHC.acceptAnyCertificate ? ResourceHolder.looseTrustManagerSSLContext : SSLContext.getDefault();
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("JLS SSLContext.getDefault() is supposed to work", e);
+            return AHC.acceptAnyCertificate ? ResourceHolder.looseTrustManagerSSLContext : SslContextBuilder.forClient().build();
+        } catch (SSLException e) {
+            throw new IllegalStateException("Could not build SslContext for the client", e);
         }
     }
 
@@ -138,21 +130,20 @@ public final class AHCUtils {
         /**
          * The singleton.
          */
-        private static SSLContext looseTrustManagerSSLContext = looseTrustManagerSSLContext();
+        private static SslContext looseTrustManagerSSLContext = looseTrustManagerSSLContext();
 
         /**
          * Instantiates the singelton.
          *
          * @return the singleton.
          */
-        private static SSLContext looseTrustManagerSSLContext() {
+        private static SslContext looseTrustManagerSSLContext() {
             try {
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, new TrustManager[]{new LooseTrustManager()}, new SecureRandom());
-                return sslContext;
-            } catch (NoSuchAlgorithmException e) {
-                throw new ExceptionInInitializerError(e);
-            } catch (KeyManagementException e) {
+                return SslContextBuilder.forClient()
+                                .protocols("TLS")
+                                .trustManager(new X509Certificate[0])
+                                .build();
+            } catch (SSLException e) {
                 throw new ExceptionInInitializerError(e);
             }
         }

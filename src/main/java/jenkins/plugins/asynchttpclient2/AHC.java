@@ -1,16 +1,21 @@
 package jenkins.plugins.asynchttpclient;
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.ProxyConfiguration;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
+import io.netty.handler.ssl.SslContextBuilder;
 import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 
+import java.io.IOException;
 import java.util.logging.Logger;
+
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.AsyncHttpClientConfig;
+import org.asynchttpclient.DefaultAsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 
@@ -85,7 +90,7 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
             if (!equals(proxy, memo)) {
                 logger.fine("Proxy configuration changed, recycling shared AsyncHttpClient instance");
                 if (instance != null) {
-                    instance.close();
+                    closeInstance();
                 }
                 instance = null;
                 memo = proxy;
@@ -93,11 +98,15 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
         }
         if (instance == null || instance.isClosed()) {
             logger.fine("Starting shared AsyncHttpClient instance");
-            instance = new AsyncHttpClient(
-                    new AsyncHttpClientConfig.Builder()
+
+            // TODO:  As far as I can tell, there's no way to disable hostname checking without using an alpha version.
+            // Before a hostname verifier was set here, but now it's baked into the client.
+            // See https://github.com/AsyncHttpClient/async-http-client/commit/d59fd205a4eca4c9514ce74440ababd93e74b0bd#diff-d1cc10c802a858bddfc6442d3333f576
+            instance = new DefaultAsyncHttpClient(
+                    new DefaultAsyncHttpClientConfig.Builder()
                             .setProxyServer(AHCUtils.getProxyServer())
-                            .setHostnameVerifier(AHCUtils.getHostnameVerifier())
-                            .setSSLContext(AHCUtils.getSSLContext())
+                            .setAcceptAnyCertificate(acceptAnyCertificate)
+                            .setSslContext(AHCUtils.getSSLContext())
                             .build());
         }
         return instance;
@@ -139,10 +148,18 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
         if (instance != null) {
             if (!instance.isClosed()) {
                 logger.fine("Shutting down shared AsyncHttpClient instance");
-                instance.close();
+                closeInstance();
             }
             instance = null;
             memo = null;
+        }
+    }
+
+    private void closeInstance() {
+        try {
+            instance.close();
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not close async http client", e);
         }
     }
 

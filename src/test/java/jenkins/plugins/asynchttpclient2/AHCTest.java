@@ -1,9 +1,5 @@
 package jenkins.plugins.asynchttpclient;
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.ListenableFuture;
-import com.ning.http.client.RequestBuilder;
-import com.ning.http.client.Response;
 import hudson.ProxyConfiguration;
 import hudson.model.FreeStyleProject;
 import java.net.HttpURLConnection;
@@ -16,6 +12,10 @@ import java.util.concurrent.ExecutionException;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.TrustManagerFactory;
 import jenkins.model.Jenkins;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.ListenableFuture;
+import org.asynchttpclient.RequestBuilder;
+import org.asynchttpclient.Response;
 import org.junit.AssumptionViolatedException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class AHCTest {
     public JenkinsRule j = new JenkinsRule();
 
     @Test
-    public void closeCausesRecycle() {
+    public void closeCausesRecycle() throws Exception {
         assertThat(AHC.instance(), notNullValue());
         AHC.instance().close();
         assertThat(AHC.instance(), notNullValue());

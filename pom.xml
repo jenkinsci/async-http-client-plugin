@@ -25,7 +25,7 @@
   </parent>
 
   <artifactId>async-http-client</artifactId>
-  <version>1.7.24.2-SNAPSHOT</version>
+  <version>1.9.40.1-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>Async Http Client</name>
@@ -62,8 +62,8 @@
   </scm>
 
   <properties>
-    <jenkins.version>1.580.1</jenkins.version>
-    <java.level>6</java.level>
+    <jenkins.version>1.625.3</jenkins.version>
+    <java.level>7</java.level>
   </properties>
 
   <repositories>
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.ning</groupId>
       <artifactId>async-http-client</artifactId>
-      <version>1.7.24</version>
+      <version>1.9.40</version>
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>

@@ -27,16 +27,6 @@ import org.kohsuke.accmod.restrictions.NoExternalUse;
 public class AHC extends Descriptor<AHC> implements Describable<AHC> {
 
     /**
-     * Override to enable insecure handling of TLS connections.
-     * @see <a href="https://www.cvedetails.com/cve/CVE-2013-7397/">CVE-2013-7397</a> and
-     * <a href="https://www.cvedetails.com/cve/CVE-2013-7398/">CVE-2013-7398</a>
-     * @since 1.7.24.1
-     */
-    @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Allow runtime modification")
-    @Restricted(NoExternalUse.class) // no direct linking against this field please
-    public static boolean acceptAnyCertificate = Boolean.getBoolean(AHC.class.getName() + ".acceptAnyCertificate");
-
-    /**
      * Our logger.
      */
     private Logger logger = Logger.getLogger(AHC.class.getName());
@@ -96,8 +86,6 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
             instance = new AsyncHttpClient(
                     new AsyncHttpClientConfig.Builder()
                             .setProxyServer(AHCUtils.getProxyServer())
-                            .setHostnameVerifier(AHCUtils.getHostnameVerifier())
-                            .setSSLContext(AHCUtils.getSSLContext())
                             .build());
         }
         return instance;

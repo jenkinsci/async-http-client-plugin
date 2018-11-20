@@ -31,10 +31,11 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
      * @see <a href="https://www.cvedetails.com/cve/CVE-2013-7397/">CVE-2013-7397</a> and
      * <a href="https://www.cvedetails.com/cve/CVE-2013-7398/">CVE-2013-7398</a>
      * @since 1.7.24.1
+     * @deprecated Async HTTP Client 1.7.24-jenkins-1 includes this logic already
      */
     @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Allow runtime modification")
     @Restricted(NoExternalUse.class) // no direct linking against this field please
-    @Deprecated // 1.7.24-jenkins-1 includes this logic already
+    @Deprecated // Async HTTP Client 1.7.24-jenkins-1 includes this logic already
     public static boolean acceptAnyCertificate = Boolean.getBoolean(AHC.class.getName() + ".acceptAnyCertificate");
 
     /**

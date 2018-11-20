@@ -76,6 +76,7 @@ public final class AHCUtils {
      *
      * @return the default {@link HostnameVerifier} to use with {@link AsyncHttpClient}.
      * @since 1.7.24.1
+     * @deprecated Async HTTP Client 1.7.24-jenkins-1 includes this logic already
      */
     @Deprecated // 1.7.24-jenkins-1 includes this logic already
     public static HostnameVerifier getHostnameVerifier() {
@@ -92,6 +93,7 @@ public final class AHCUtils {
      *
      * @return the default {@link SSLContext} to use with {@link AsyncHttpClient}.
      * @since 1.7.24.1
+     * @deprecated Async HTTP Client 1.7.24-jenkins-1 includes this logic already
      */
     @Deprecated // 1.7.24-jenkins-1 includes this logic already
     public static SSLContext getSSLContext() {

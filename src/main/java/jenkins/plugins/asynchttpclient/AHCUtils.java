@@ -15,6 +15,7 @@
  */
 package jenkins.plugins.asynchttpclient;
 
+import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.ProxyServer;
 import com.ning.http.util.DefaultHostnameVerifier;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;

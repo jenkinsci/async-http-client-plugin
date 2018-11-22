@@ -78,7 +78,7 @@ public final class AHCUtils {
      * @since 1.7.24.1
      * @deprecated Async HTTP Client 1.7.24-jenkins-1 includes this logic already
      */
-    @Deprecated // 1.7.24-jenkins-1 includes this logic already
+    @Deprecated
     public static HostnameVerifier getHostnameVerifier() {
         return AHC.acceptAnyCertificate ? new HostnameVerifier() {
             @Override
@@ -95,7 +95,7 @@ public final class AHCUtils {
      * @since 1.7.24.1
      * @deprecated Async HTTP Client 1.7.24-jenkins-1 includes this logic already
      */
-    @Deprecated // 1.7.24-jenkins-1 includes this logic already
+    @Deprecated
     public static SSLContext getSSLContext() {
         try {
             return AHC.acceptAnyCertificate ? ResourceHolder.looseTrustManagerSSLContext : SSLContext.getDefault();

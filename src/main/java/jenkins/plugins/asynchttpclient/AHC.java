@@ -35,7 +35,7 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
      */
     @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Allow runtime modification")
     @Restricted(NoExternalUse.class) // no direct linking against this field please
-    @Deprecated // Async HTTP Client 1.7.24-jenkins-1 includes this logic already
+    @Deprecated
     public static boolean acceptAnyCertificate = Boolean.getBoolean(AHC.class.getName() + ".acceptAnyCertificate");
 
     /**

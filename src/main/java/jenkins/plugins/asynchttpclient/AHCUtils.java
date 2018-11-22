@@ -17,20 +17,21 @@ package jenkins.plugins.asynchttpclient;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.ProxyServer;
+import com.ning.http.util.DefaultHostnameVerifier;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.ProxyConfiguration;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import jenkins.model.Jenkins;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import jenkins.model.Jenkins;
-import jenkins.plugins.asynchttpclient.util.DefaultHostnameVerifier;
-import org.kohsuke.accmod.Restricted;
-import org.kohsuke.accmod.restrictions.NoExternalUse;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * Utility methods for dealing with {@link com.ning.http.client.AsyncHttpClient} from a Jenkins plugin.
@@ -75,7 +76,9 @@ public final class AHCUtils {
      *
      * @return the default {@link HostnameVerifier} to use with {@link AsyncHttpClient}.
      * @since 1.7.24.1
+     * @deprecated Async HTTP Client 1.7.24-jenkins-1 includes this logic already
      */
+    @Deprecated
     public static HostnameVerifier getHostnameVerifier() {
         return AHC.acceptAnyCertificate ? new HostnameVerifier() {
             @Override
@@ -90,7 +93,9 @@ public final class AHCUtils {
      *
      * @return the default {@link SSLContext} to use with {@link AsyncHttpClient}.
      * @since 1.7.24.1
+     * @deprecated Async HTTP Client 1.7.24-jenkins-1 includes this logic already
      */
+    @Deprecated
     public static SSLContext getSSLContext() {
         try {
             return AHC.acceptAnyCertificate ? ResourceHolder.looseTrustManagerSSLContext : SSLContext.getDefault();
@@ -108,27 +113,23 @@ public final class AHCUtils {
      */
     @Restricted(NoExternalUse.class)
     static class LooseTrustManager implements X509TrustManager {
-
         /**
          * {@inheritDoc}
          */
         public java.security.cert.X509Certificate[] getAcceptedIssuers() {
             return new java.security.cert.X509Certificate[0];
         }
-
         /**
          * {@inheritDoc}
          */
         public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
         }
-
         /**
          * {@inheritDoc}
          */
         public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
         }
     }
-
     /**
      * Resource holder for the {@link LooseTrustManager} singleton.
      *
@@ -139,7 +140,6 @@ public final class AHCUtils {
          * The singleton.
          */
         private static SSLContext looseTrustManagerSSLContext = looseTrustManagerSSLContext();
-
         /**
          * Instantiates the singelton.
          *
@@ -157,6 +157,5 @@ public final class AHCUtils {
             }
         }
     }
-
 
 }

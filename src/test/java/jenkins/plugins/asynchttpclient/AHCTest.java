@@ -115,22 +115,22 @@ public class AHCTest {
     @Issue("JENKINS-60444")
     @Test
     public void acceptGoodCertificate() throws Throwable {
-        String host = "https://8.8.8.8";
+        String wellKnownPublicServer = "https://8.8.8.8";
         try {
             ProxyConfiguration proxy = Jenkins.getInstance().proxy;
-            URL url = new URL(host);
+            URL url = new URL(wellKnownPublicServer);
             HttpURLConnection connection = (HttpURLConnection)
-                    (proxy == null ? url.openConnection() : url.openConnection(proxy.createProxy(host)));
+                    (proxy == null ? url.openConnection() : url.openConnection(proxy.createProxy(wellKnownPublicServer)));
             connection.setRequestMethod("HEAD");
             connection.setConnectTimeout(30000);
             connection.connect();
         } catch (SSLHandshakeException e) {
-            throw new AssumptionViolatedException("The Root CA for " + host + " should be in the JVM trust store", e);
+            throw new AssumptionViolatedException("The Root CA for " + wellKnownPublicServer + " should be in the JVM trust store", e);
         } catch (SocketTimeoutException e) {
-            throw new AssumptionViolatedException("We can not connect to " + host, e);
+            throw new AssumptionViolatedException("We can not connect to " + wellKnownPublicServer, e);
         }
         AsyncHttpClient ahc = AHC.instance();
-        ListenableFuture<Response> response = ahc.prepareGet(host).execute();
+        ListenableFuture<Response> response = ahc.prepareGet(wellKnownPublicServer).execute();
         assertTrue(response.get().hasResponseStatus());
     }
 }

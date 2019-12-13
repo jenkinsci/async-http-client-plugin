@@ -115,7 +115,7 @@ public class AHCTest {
     @Issue("JENKINS-60444")
     @Test
     public void acceptGoodCertificate() throws Throwable {
-        String wellKnownPublicServer = "https://8.8.8.8";
+        final String wellKnownPublicServer = "https://8.8.8.8";
         try {
             ProxyConfiguration proxy = Jenkins.getInstance().proxy;
             URL url = new URL(wellKnownPublicServer);

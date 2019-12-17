@@ -19,6 +19,7 @@ import jenkins.model.Jenkins;
 import org.junit.AssumptionViolatedException;
 import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import sun.security.provider.certpath.SunCertPathBuilderException;
 
@@ -110,24 +111,26 @@ public class AHCTest {
         }
         fail("Expired certificate accepted");
     }
-
+    
+    @Issue("JENKINS-60444")
     @Test
     public void acceptGoodCertificate() throws Throwable {
+        final String wellKnownPublicServer = "https://8.8.8.8";
         try {
             ProxyConfiguration proxy = Jenkins.getInstance().proxy;
-            URL url = new URL("https://letsencrypt.org");
+            URL url = new URL(wellKnownPublicServer);
             HttpURLConnection connection = (HttpURLConnection)
-                    (proxy == null ? url.openConnection() : url.openConnection(proxy.createProxy("letsencrypt.org")));
+                    (proxy == null ? url.openConnection() : url.openConnection(proxy.createProxy(wellKnownPublicServer)));
             connection.setRequestMethod("HEAD");
             connection.setConnectTimeout(30000);
             connection.connect();
         } catch (SSLHandshakeException e) {
-            throw new AssumptionViolatedException("The Root CA for letsencrypt.org is in the JVM trust store", e);
+            throw new AssumptionViolatedException("The Root CA for " + wellKnownPublicServer + " should be in the JVM trust store", e);
         } catch (SocketTimeoutException e) {
-            throw new AssumptionViolatedException("We can connect to letsencrypt.org", e);
+            throw new AssumptionViolatedException("We can not connect to " + wellKnownPublicServer, e);
         }
         AsyncHttpClient ahc = AHC.instance();
-        ListenableFuture<Response> response = ahc.prepareGet("https://letsencrypt.org").execute();
+        ListenableFuture<Response> response = ahc.prepareGet(wellKnownPublicServer).execute();
         assertTrue(response.get().hasResponseStatus());
     }
 }

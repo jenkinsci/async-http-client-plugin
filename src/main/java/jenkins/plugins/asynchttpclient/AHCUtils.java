@@ -57,8 +57,8 @@ public final class AHCUtils {
             final ProxyConfiguration proxy = Jenkins.getInstance().proxy;
             proxyServer = new ProxyServer(proxy.name, proxy.port, proxy.getUserName(), proxy.getPassword());
 
-            if (proxy.noProxyHost != null) {
-                for (String s : proxy.noProxyHost.split("[ \t\n,|]+")) {
+            if (proxy.getNoProxyHost() != null) {
+                for (String s : proxy.getNoProxyHost().split("[ \t\n,|]+")) {
                     if (s.length() > 0) {
                         proxyServer.addNonProxyHost(s);
                     }

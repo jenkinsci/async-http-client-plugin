@@ -20,7 +20,7 @@ import org.junit.AssumptionViolatedException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-import sun.security.provider.certpath.SunCertPathBuilderException;
+import java.security.cert.CertPathBuilderException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -56,7 +56,7 @@ public class AHCTest {
         ));
     }
 
-    @Test(expected=SunCertPathBuilderException.class)
+    @Test(expected=CertPathBuilderException.class)
     public void failsOnSelfSignedCertificate() throws Throwable {
         try {
             ProxyConfiguration proxy = Jenkins.getInstance().proxy;
@@ -84,7 +84,7 @@ public class AHCTest {
     }
 
 
-    @Test(expected=SunCertPathBuilderException.class)
+    @Test(expected=CertPathBuilderException.class)
     public void failsOnExpiredCertificate() throws Throwable {
         try {
             ProxyConfiguration proxy = Jenkins.getInstance().proxy;
